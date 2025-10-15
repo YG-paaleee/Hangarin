@@ -1,81 +1,159 @@
-{% extends 'base.html' %}<!DOCTYPE html>
+{% extends 'base.html' %}{% extends 'base.html' %}<!DOCTYPE html>
+
+{% load static %}
 
 {% load static %}<html lang="en">
 
-{% block content %}<head>
+{% block content %}
 
-  <div class="content">    <meta charset="UTF-8">
+<div class="content">{% block content %}<head>
 
-    <div class="container-fluid">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="container-fluid">
 
-      <h4 class="page-title">Home</h4>    <title>{% if object %}Edit SubTask{% else %}Add SubTask{% endif %}</title>
+        <h4 class="page-title">Home</h4>  <div class="content">    <meta charset="UTF-8">
 
-      <div class="row">    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <div class="row">
 
-        <div class="col-md-12"></head>
+            <div class="col-md-12">    <div class="container-fluid">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-          <div class="card"><body>
+                <div class="card">
 
-            <div class="card-header">    <div class="container mt-5">
+                    <div class="card-header">      <h4 class="page-title">Home</h4>    <title>{% if object %}Edit SubTask{% else %}Add SubTask{% endif %}</title>
 
-              <div class="card-title">        <div class="row justify-content-center">
+                        <div class="card-title">
 
-                {% if object %}            <div class="col-md-8">
+                            {% if object %}      <div class="row">    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-                  Update SubTask                <div class="card">
+                                Update SubTask
 
-                {% else %}                    <div class="card-header">
+                            {% else %}        <div class="col-md-12"></head>
 
-                  Add New SubTask                        <h3>{% if object %}Edit SubTask{% else %}Add New SubTask{% endif %}</h3>
+                                Add New SubTask
 
-                {% endif %}                    </div>
+                            {% endif %}          <div class="card"><body>
 
-              </div>                    <div class="card-body">
+                        </div>
 
-              <div class="card-category">Page Subtitle</div>                        <form method="post">
+                        <div class="card-category">Page Subtitle</div>            <div class="card-header">    <div class="container mt-5">
 
-            </div>                            {% csrf_token %}
+                    </div>
 
-            <div class="col-md-6">                            <div class="mb-3">
+                    <div class="card-body">              <div class="card-title">        <div class="row justify-content-center">
 
-              <div class="card-body">                                <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                        <form method="post" novalidate>
 
-                <form class="" action="" method="post" novalidate>                                {{ form.title }}
-
-                  {% csrf_token %}                                {% if form.title.errors %}
-
-                  {% include 'includes/form.html' %}                                    <div class="text-danger">
-
-                  <div class="form-group">                                        {{ form.title.errors }}
-
-                    <div class="col-md-12 col-sm-3">                                    </div>
-
-                      <button type="submit" class="btn btn-primary btn-rounded">Submit</button>                                {% endif %}
-
-                    </div>                            </div>
-
-                  </div>                            
-
-                </form>                            <div class="mb-3">
-
-              </div>                                <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
-
-            </div>                                {{ form.status }}
-
-          </div>                                {% if form.status.errors %}
-
-        </div>                                    <div class="text-danger">
-
-      </div>                                        {{ form.status.errors }}
-
-    </div>                                    </div>
-
-  </div>                                {% endif %}
-
-{% endblock %}                            </div>
+                            {% csrf_token %}                {% if object %}            <div class="col-md-8">
 
                             
-                            <div class="mb-3">
+
+                            <div class="form-group">                  Update SubTask                <div class="card">
+
+                                <label for="{{ form.title.id_for_label }}">Title</label>
+
+                                {{ form.title }}                {% else %}                    <div class="card-header">
+
+                                {% if form.title.errors %}
+
+                                    <div class="text-danger">                  Add New SubTask                        <h3>{% if object %}Edit SubTask{% else %}Add New SubTask{% endif %}</h3>
+
+                                        {{ form.title.errors }}
+
+                                    </div>                {% endif %}                    </div>
+
+                                {% endif %}
+
+                            </div>              </div>                    <div class="card-body">
+
+                            
+
+                            <div class="form-group">              <div class="card-category">Page Subtitle</div>                        <form method="post">
+
+                                <label for="{{ form.status.id_for_label }}">Status</label>
+
+                                {{ form.status }}            </div>                            {% csrf_token %}
+
+                                {% if form.status.errors %}
+
+                                    <div class="text-danger">            <div class="col-md-6">                            <div class="mb-3">
+
+                                        {{ form.status.errors }}
+
+                                    </div>              <div class="card-body">                                <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+
+                                {% endif %}
+
+                            </div>                <form class="" action="" method="post" novalidate>                                {{ form.title }}
+
+                            
+
+                            <div class="form-group">                  {% csrf_token %}                                {% if form.title.errors %}
+
+                                <label for="{{ form.parent_task.id_for_label }}">Parent Task</label>
+
+                                {{ form.parent_task }}                  {% include 'includes/form.html' %}                                    <div class="text-danger">
+
+                                {% if form.parent_task.errors %}
+
+                                    <div class="text-danger">                  <div class="form-group">                                        {{ form.title.errors }}
+
+                                        {{ form.parent_task.errors }}
+
+                                    </div>                    <div class="col-md-12 col-sm-3">                                    </div>
+
+                                {% endif %}
+
+                            </div>                      <button type="submit" class="btn btn-primary btn-rounded">Submit</button>                                {% endif %}
+
+                            
+
+                            <div class="form-group">                    </div>                            </div>
+
+                                <button type="submit" class="btn btn-primary btn-rounded">
+
+                                    {% if object %}Update SubTask{% else %}Add SubTask{% endif %}                  </div>                            
+
+                                </button>
+
+                                <a href="{% url 'subtask-list' %}" class="btn btn-secondary btn-rounded">Cancel</a>                </form>                            <div class="mb-3">
+
+                            </div>
+
+                        </form>              </div>                                <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
+
+                    </div>
+
+                </div>            </div>                                {{ form.status }}
+
+            </div>
+
+        </div>          </div>                                {% if form.status.errors %}
+
+    </div>
+
+</div>        </div>                                    <div class="text-danger">
+
+
+
+<script>      </div>                                        {{ form.status.errors }}
+
+    // Add form-control class to all form inputs
+
+    document.addEventListener('DOMContentLoaded', function() {    </div>                                    </div>
+
+        const inputs = document.querySelectorAll('input[type="text"], textarea, select');
+
+        inputs.forEach(input => {  </div>                                {% endif %}
+
+            input.classList.add('form-control');
+
+        });{% endblock %}                            </div>
+
+    });
+
+</script>                            
+
+{% endblock %}                            <div class="mb-3">
+
                                 <label for="{{ form.parent_task.id_for_label }}" class="form-label">Parent Task</label>
                                 {{ form.parent_task }}
                                 {% if form.parent_task.errors %}
