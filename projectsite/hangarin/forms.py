@@ -26,3 +26,6 @@ class SubTaskForm(ModelForm):
     class Meta:
         model = SubTask
         fields = "__all__" 
+        widgets = {
+            'parent_task': forms.HiddenInput(),
+        }

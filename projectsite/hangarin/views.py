@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from hangarin.forms import TaskForm, PriorityForm, CategoryForm, NoteForm, SubTaskForm
@@ -294,6 +294,28 @@ class SubTaskCreateView(CreateView):
     form_class = SubTaskForm
     template_name = "subtask_form.html"
     success_url = reverse_lazy("subtask-list")
+
+    def dispatch(self, request, *args, **kwargs):
+        # Get the parent task from URL
+        self.parent_task = get_object_or_404(Task, pk=kwargs['task_pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        # Pre-fill the parent_task field
+        initial = super().get_initial()
+        initial['parent_task'] = self.parent_task
+        return initial
+
+    def form_valid(self, form):
+        # Ensure parent_task is set before saving
+        form.instance.parent_task = self.parent_task
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        # Pass parent_task to template
+        context = super().get_context_data(**kwargs)
+        context['parent_task'] = self.parent_task
+        return context
 
 #subtaskupdate
 class SubTaskUpdateView(UpdateView):
