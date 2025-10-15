@@ -6,6 +6,9 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = "__all__"
+        widgets = {
+            'deadline': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
 
 class PriorityForm(ModelForm):
     class Meta:
