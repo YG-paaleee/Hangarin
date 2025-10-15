@@ -1,160 +1,49 @@
-{% extends 'base.html' %}{% extends 'base.html' %}<!DOCTYPE html>
-
+﻿{% extends 'base.html' %}
 {% load static %}
 
-{% load static %}<html lang="en">
-
 {% block content %}
-
-<div class="content">{% block content %}<head>
-
+<div class="content">
     <div class="container-fluid">
-
-        <h4 class="page-title">Home</h4>  <div class="content">    <meta charset="UTF-8">
-
+        <h4 class="page-title">Home</h4>
         <div class="row">
-
-            <div class="col-md-12">    <div class="container-fluid">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+            <div class="col-md-12">
                 <div class="card">
-
-                    <div class="card-header">      <h4 class="page-title">Home</h4>    <title>{% if object %}Edit SubTask{% else %}Add SubTask{% endif %}</title>
-
+                    <div class="card-header">
                         <div class="card-title">
-
-                            {% if object %}      <div class="row">    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+                            {% if object %}
                                 Update SubTask
-
-                            {% else %}        <div class="col-md-12"></head>
-
+                            {% else %}
                                 Add New SubTask
-
-                            {% endif %}          <div class="card"><body>
-
+                            {% endif %}
                         </div>
-
-                        <div class="card-category">Page Subtitle</div>            <div class="card-header">    <div class="container mt-5">
-
+                        <div class="card-category">Page Subtitle</div>
                     </div>
-
-                    <div class="card-body">              <div class="card-title">        <div class="row justify-content-center">
-
+                    <div class="card-body">
                         <form method="post" novalidate>
-
-                            {% csrf_token %}                {% if object %}            <div class="col-md-8">
-
+                            {% csrf_token %}
                             
-
-                            <div class="form-group">                  Update SubTask                <div class="card">
-
+                            <div class="form-group">
                                 <label for="{{ form.title.id_for_label }}">Title</label>
-
-                                {{ form.title }}                {% else %}                    <div class="card-header">
-
+                                {{ form.title }}
                                 {% if form.title.errors %}
-
-                                    <div class="text-danger">                  Add New SubTask                        <h3>{% if object %}Edit SubTask{% else %}Add New SubTask{% endif %}</h3>
-
+                                    <div class="text-danger">
                                         {{ form.title.errors }}
-
-                                    </div>                {% endif %}                    </div>
-
+                                    </div>
                                 {% endif %}
-
-                            </div>              </div>                    <div class="card-body">
-
-                            
-
-                            <div class="form-group">              <div class="card-category">Page Subtitle</div>                        <form method="post">
-
-                                <label for="{{ form.status.id_for_label }}">Status</label>
-
-                                {{ form.status }}            </div>                            {% csrf_token %}
-
-                                {% if form.status.errors %}
-
-                                    <div class="text-danger">            <div class="col-md-6">                            <div class="mb-3">
-
-                                        {{ form.status.errors }}
-
-                                    </div>              <div class="card-body">                                <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
-
-                                {% endif %}
-
-                            </div>                <form class="" action="" method="post" novalidate>                                {{ form.title }}
-
-                            
-
-                            <div class="form-group">                  {% csrf_token %}                                {% if form.title.errors %}
-
-                                <label for="{{ form.parent_task.id_for_label }}">Parent Task</label>
-
-                                {{ form.parent_task }}                  {% include 'includes/form.html' %}                                    <div class="text-danger">
-
-                                {% if form.parent_task.errors %}
-
-                                    <div class="text-danger">                  <div class="form-group">                                        {{ form.title.errors }}
-
-                                        {{ form.parent_task.errors }}
-
-                                    </div>                    <div class="col-md-12 col-sm-3">                                    </div>
-
-                                {% endif %}
-
-                            </div>                      <button type="submit" class="btn btn-primary btn-rounded">Submit</button>                                {% endif %}
-
-                            
-
-                            <div class="form-group">                    </div>                            </div>
-
-                                <button type="submit" class="btn btn-primary btn-rounded">
-
-                                    {% if object %}Update SubTask{% else %}Add SubTask{% endif %}                  </div>                            
-
-                                </button>
-
-                                <a href="{% url 'subtask-list' %}" class="btn btn-secondary btn-rounded">Cancel</a>                </form>                            <div class="mb-3">
-
                             </div>
-
-                        </form>              </div>                                <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
-
-                    </div>
-
-                </div>            </div>                                {{ form.status }}
-
-            </div>
-
-        </div>          </div>                                {% if form.status.errors %}
-
-    </div>
-
-</div>        </div>                                    <div class="text-danger">
-
-
-
-<script>      </div>                                        {{ form.status.errors }}
-
-    // Add form-control class to all form inputs
-
-    document.addEventListener('DOMContentLoaded', function() {    </div>                                    </div>
-
-        const inputs = document.querySelectorAll('input[type="text"], textarea, select');
-
-        inputs.forEach(input => {  </div>                                {% endif %}
-
-            input.classList.add('form-control');
-
-        });{% endblock %}                            </div>
-
-    });
-
-</script>                            
-
-{% endblock %}                            <div class="mb-3">
-
-                                <label for="{{ form.parent_task.id_for_label }}" class="form-label">Parent Task</label>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.status.id_for_label }}">Status</label>
+                                {{ form.status }}
+                                {% if form.status.errors %}
+                                    <div class="text-danger">
+                                        {{ form.status.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.parent_task.id_for_label }}">Parent Task</label>
                                 {{ form.parent_task }}
                                 {% if form.parent_task.errors %}
                                     <div class="text-danger">
@@ -163,11 +52,11 @@
                                 {% endif %}
                             </div>
                             
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    {% if object %}Update SubTask{% else %}Create SubTask{% endif %}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-rounded">
+                                    {% if object %}Update SubTask{% else %}Add SubTask{% endif %}
                                 </button>
-                                <a href="{% url 'subtask-list' %}" class="btn btn-secondary">Cancel</a>
+                                <a href="{% url 'subtask-list' %}" class="btn btn-secondary btn-rounded">Cancel</a>
                             </div>
                         </form>
                     </div>
@@ -175,16 +64,14 @@
             </div>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Add Bootstrap form-control class to form inputs
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], textarea, select');
-            inputs.forEach(input => {
-                input.classList.add('form-control');
-            });
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('input[type="text"], textarea, select');
+        inputs.forEach(input => {
+            input.classList.add('form-control');
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+{% endblock %}
