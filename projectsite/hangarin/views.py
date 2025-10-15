@@ -296,25 +296,29 @@ class SubTaskCreateView(CreateView):
     success_url = reverse_lazy("subtask-list")
 
     def dispatch(self, request, *args, **kwargs):
-        # Get the parent task from URL
-        self.parent_task = get_object_or_404(Task, pk=kwargs['task_pk'])
+        # Get the parent task from URL if provided (optional)
+        task_pk = kwargs.get('task_pk')
+        self.parent_task = get_object_or_404(Task, pk=task_pk) if task_pk else None
         return super().dispatch(request, *args, **kwargs)
 
     def get_initial(self):
-        # Pre-fill the parent_task field
+        # Pre-fill the parent_task field if task was provided
         initial = super().get_initial()
-        initial['parent_task'] = self.parent_task
+        if self.parent_task:
+            initial['parent_task'] = self.parent_task
         return initial
 
     def form_valid(self, form):
-        # Ensure parent_task is set before saving
-        form.instance.parent_task = self.parent_task
+        # Ensure parent_task is set if provided
+        if self.parent_task:
+            form.instance.parent_task = self.parent_task
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        # Pass parent_task to template
+        # Pass parent_task to template if available
         context = super().get_context_data(**kwargs)
-        context['parent_task'] = self.parent_task
+        if self.parent_task:
+            context['parent_task'] = self.parent_task
         return context
 
 #subtaskupdate
