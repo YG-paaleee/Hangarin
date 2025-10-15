@@ -1,17 +1,41 @@
 from django.shortcuts import render
-
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from hangarin.forms import TaskForm, PriorityForm, CategoryForm, NoteForm, SubTaskForm
 from django.urls import reverse_lazy
 from hangarin.models import Task, Priority, Category, Note, SubTask
+from django.db.models import Q
+from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-class HomePageView(ListView):   
+class HomePageView(LoginRequiredMixin, ListView):   
     model = Task
     context_object_name = 'home'
     template_name = "home.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Get statistics for dashboard
+        context['total_tasks'] = Task.objects.count()
+        context['pending_tasks'] = Task.objects.filter(status='Pending').count()
+        context['in_progress_tasks'] = Task.objects.filter(status='In Progress').count()
+        context['completed_tasks'] = Task.objects.filter(status='Completed').count()
+        
+        # Additional statistics
+        context['total_categories'] = Category.objects.count()
+        context['total_priorities'] = Priority.objects.count()
+        context['total_notes'] = Note.objects.count()
+        context['total_subtasks'] = SubTask.objects.count()
+        
+        # Tasks created this year
+        current_year = datetime.now().year
+        context['tasks_this_year'] = Task.objects.filter(
+            created_at__year=current_year
+        ).count()
+        
+        return context
 
 #tasklist 
 class TaskList(ListView):
@@ -19,7 +43,49 @@ class TaskList(ListView):
     context_object_name = 'tasks'
     template_name = 'task_list.html'
     paginate_by = 10
-    ordering = ["-created_at"]
+    
+    def get_queryset(self):
+        queryset = Task.objects.all()
+        
+        # Search functionality
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(description__icontains=query) |
+                Q(status__icontains=query) |
+                Q(category__name__icontains=query) |
+                Q(priority__name__icontains=query)
+            )
+        
+        # Filter by status
+        status_filter = self.request.GET.get('status')
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        
+        # Filter by category
+        category_filter = self.request.GET.get('category')
+        if category_filter:
+            queryset = queryset.filter(category_id=category_filter)
+        
+        # Filter by priority
+        priority_filter = self.request.GET.get('priority')
+        if priority_filter:
+            queryset = queryset.filter(priority_id=priority_filter)
+        
+        # Sorting/Ordering
+        ordering = self.request.GET.get('ordering', '-created_at')
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['priorities'] = Priority.objects.all()
+        context['status_choices'] = ['Pending', 'In Progress', 'Completed']
+        return context
 
 #taskcreate 
 class TaskCreateView(CreateView):
@@ -47,7 +113,21 @@ class PriorityList(ListView):
     context_object_name = 'priorities'
     template_name = 'priority_list.html'
     paginate_by = 10
-    ordering = ["-created_at"]
+    
+    def get_queryset(self):
+        queryset = Priority.objects.all()
+        
+        # Search functionality
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(Q(name__icontains=query))
+        
+        # Sorting/Ordering
+        ordering = self.request.GET.get('ordering', '-created_at')
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        
+        return queryset
 
 #prioritycreate
 class PriorityCreateView(CreateView):
@@ -75,7 +155,21 @@ class CategoryList(ListView):
     context_object_name = 'categories'
     template_name = 'category_list.html'
     paginate_by = 10
-    ordering = ["-created_at"]
+    
+    def get_queryset(self):
+        queryset = Category.objects.all()
+        
+        # Search functionality
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(Q(name__icontains=query))
+        
+        # Sorting/Ordering
+        ordering = self.request.GET.get('ordering', '-created_at')
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        
+        return queryset
 
 #categorycreate
 class CategoryCreateView(CreateView):
@@ -103,7 +197,34 @@ class NoteList(ListView):
     context_object_name = 'notes'
     template_name = 'note_list.html'
     paginate_by = 10
-    ordering = ["-created_at"]
+    
+    def get_queryset(self):
+        queryset = Note.objects.all()
+        
+        # Search functionality
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(content__icontains=query) |
+                Q(task__title__icontains=query)
+            )
+        
+        # Filter by task
+        task_filter = self.request.GET.get('task')
+        if task_filter:
+            queryset = queryset.filter(task_id=task_filter)
+        
+        # Sorting/Ordering
+        ordering = self.request.GET.get('ordering', '-created_at')
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = Task.objects.all()
+        return context
 
 #notecreate
 class NoteCreateView(CreateView):
@@ -131,7 +252,41 @@ class SubTaskList(ListView):
     context_object_name = 'subtasks'
     template_name = 'subtask_list.html'
     paginate_by = 10
-    ordering = ["-created_at"]
+    
+    def get_queryset(self):
+        queryset = SubTask.objects.all()
+        
+        # Search functionality
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(status__icontains=query) |
+                Q(parent_task__title__icontains=query)
+            )
+        
+        # Filter by status
+        status_filter = self.request.GET.get('status')
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        
+        # Filter by parent task
+        task_filter = self.request.GET.get('task')
+        if task_filter:
+            queryset = queryset.filter(parent_task_id=task_filter)
+        
+        # Sorting/Ordering
+        ordering = self.request.GET.get('ordering', '-created_at')
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = Task.objects.all()
+        context['status_choices'] = ['Pending', 'In Progress', 'Completed']
+        return context
 
 #subtaskcreate
 class SubTaskCreateView(CreateView):
