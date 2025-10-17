@@ -122,10 +122,16 @@ class PriorityList(ListView):
         if query:
             queryset = queryset.filter(Q(name__icontains=query))
         
-        # Sorting/Ordering
-        ordering = self.request.GET.get('ordering', '-created_at')
-        if ordering:
-            queryset = queryset.order_by(ordering)
+        # Sorting
+        sort = self.request.GET.get('sort', 'newest')
+        if sort == 'newest':
+            queryset = queryset.order_by('-created_at')
+        elif sort == 'oldest':
+            queryset = queryset.order_by('created_at')
+        elif sort == 'name':
+            queryset = queryset.order_by('name')
+        else:
+            queryset = queryset.order_by('-created_at')
         
         return queryset
 
@@ -164,10 +170,16 @@ class CategoryList(ListView):
         if query:
             queryset = queryset.filter(Q(name__icontains=query))
         
-        # Sorting/Ordering
-        ordering = self.request.GET.get('ordering', '-created_at')
-        if ordering:
-            queryset = queryset.order_by(ordering)
+        # Sorting
+        sort = self.request.GET.get('sort', 'newest')
+        if sort == 'newest':
+            queryset = queryset.order_by('-created_at')
+        elif sort == 'oldest':
+            queryset = queryset.order_by('created_at')
+        elif sort == 'name':
+            queryset = queryset.order_by('name')
+        else:
+            queryset = queryset.order_by('-created_at')
         
         return queryset
 
@@ -214,10 +226,16 @@ class NoteList(ListView):
         if task_filter:
             queryset = queryset.filter(task_id=task_filter)
         
-        # Sorting/Ordering
-        ordering = self.request.GET.get('ordering', '-created_at')
-        if ordering:
-            queryset = queryset.order_by(ordering)
+        # Sorting
+        sort = self.request.GET.get('sort', 'newest')
+        if sort == 'newest':
+            queryset = queryset.order_by('-created_at')
+        elif sort == 'oldest':
+            queryset = queryset.order_by('created_at')
+        elif sort == 'task':
+            queryset = queryset.order_by('task__title')
+        else:
+            queryset = queryset.order_by('-created_at')
         
         return queryset
     
@@ -275,10 +293,18 @@ class SubTaskList(ListView):
         if task_filter:
             queryset = queryset.filter(parent_task_id=task_filter)
         
-        # Sorting/Ordering
-        ordering = self.request.GET.get('ordering', '-created_at')
-        if ordering:
-            queryset = queryset.order_by(ordering)
+        # Sorting
+        sort = self.request.GET.get('sort', 'newest')
+        if sort == 'newest':
+            queryset = queryset.order_by('-created_at')
+        elif sort == 'oldest':
+            queryset = queryset.order_by('created_at')
+        elif sort == 'title':
+            queryset = queryset.order_by('title')
+        elif sort == 'task':
+            queryset = queryset.order_by('parent_task__title')
+        else:
+            queryset = queryset.order_by('-created_at')
         
         return queryset
     

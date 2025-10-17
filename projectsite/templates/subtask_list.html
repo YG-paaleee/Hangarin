@@ -11,10 +11,10 @@
             </div>
             <br />
                 <div class="col-md-12 row">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <form class="navbar-left navbar-form nav-search mr-md-3" action="{% url 'subtask-list'%}">
                       <div class="input-group">
-                          <input type="text" placeholder="Search ..." class="form-control" name="q" />
+                          <input type="text" placeholder="Search ..." class="form-control" name="q" value="{{ request.GET.q }}" />
                           <div class="input-group-append">
                           <span class="input-group-text">
                               <i class="la la-search search-icon"></i>
@@ -23,7 +23,27 @@
                       </div>
                     </form>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2">
+                    <form action="{% url 'subtask-list' %}" method="get">
+                        <select name="status" class="form-control" onchange="this.form.submit()">
+                            <option value="">All Status</option>
+                            <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Completed" {% if request.GET.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="col-md-2">
+                    <form action="{% url 'subtask-list' %}" method="get">
+                        <select name="sort" class="form-control" onchange="this.form.submit()">
+                            <option value="">Sort By...</option>
+                            <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
+                            <option value="oldest" {% if request.GET.sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+                            <option value="title" {% if request.GET.sort == 'title' %}selected{% endif %}>Title (A-Z)</option>
+                            <option value="task" {% if request.GET.sort == 'task' %}selected{% endif %}>By Task</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="col-md-5">
                     <div class="pull-right">
                     <a href="{% url 'subtask-add' %}" class="btn btn-success btn-rounded">
                         Add New SubTask
