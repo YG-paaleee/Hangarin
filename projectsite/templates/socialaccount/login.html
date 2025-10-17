@@ -5,9 +5,69 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Confirm Google Login</title>
+    <title>Confirm Sign In - Hangarin</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Font Awesome -->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <!-- SB Admin 2 CSS -->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    
+    <style>
+        /* Green gradient background matching dashboard */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%) !important;
+        }
+
+        /* Leaf icon animation */
+        .leaf-icon {
+            font-size: 3rem;
+            color: #2d6a4f;
+            animation: bounce 2s infinite;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Hangarin heading */
+        .text-gray-900 {
+            color: #2d6a4f !important;
+            font-weight: bold;
+        }
+
+        /* Green buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%) !important;
+            border: none !important;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+        }
+
+        /* Cancel button */
+        .btn-outline-secondary {
+            color: #2d6a4f !important;
+            border-color: #2d6a4f !important;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #2d6a4f !important;
+            border-color: #2d6a4f !important;
+            color: white !important;
+        }
+
+        .provider-name {
+            color: #2d6a4f;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="bg-gradient-primary">
     <div class="container">
@@ -17,14 +77,20 @@
                     <div class="card-body p-0">
                         <div class="p-5">
                             <div class="text-center">
-                                <h3 class="h4 text-gray-900 mb-4">Confirm Sign In</h3>
-                                <p class="mb-3">You are about to sign in using your <strong>{{ provider.name }}</strong> account.</p>
+                                <i class="fas fa-leaf leaf-icon"></i>
+                                <h1 class="h3 text-gray-900 mb-2">HANGARIN</h1>
+                                <h3 class="h5 mb-4" style="color: #666;">Confirm Sign In</h3>
+                                <p class="mb-4">You are about to sign in using your <span class="provider-name">{{ provider.name }}</span> account.</p>
                             </div>
                             <form method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-primary btn-user btn-block mb-3">Continue with {{ provider.name }}</button>
+                                <button type="submit" class="btn btn-primary btn-user btn-block mb-3">
+                                    <i class="fas fa-check-circle mr-2"></i>Continue with {{ provider.name }}
+                                </button>
                             </form>
-                            <a href="{% url 'account_login' %}" class="btn btn-outline-secondary btn-user btn-block">Cancel</a>
+                            <a href="{% url 'account_login' %}" class="btn btn-outline-secondary btn-user btn-block">
+                                <i class="fas fa-times-circle mr-2"></i>Cancel
+                            </a>
                         </div>
                     </div>
                 </div>
