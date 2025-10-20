@@ -197,6 +197,42 @@
                 margin: 0.25rem 0;
                 border-radius: 8px;
             }
+
+            /* Make tables scrollable on mobile */
+            .table-responsive {
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            table {
+                min-width: 600px;
+            }
+        }
+
+        /* Table responsive wrapper */
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Ensure tables fit properly */
+        table {
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            /* Adjust table font size on mobile */
+            table {
+                font-size: 0.875rem;
+            }
+            
+            /* Make action buttons more compact on mobile */
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
         }
 
         /* Remove old sidebar styles */
@@ -267,7 +303,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown2" 
                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-white">tester</span>
+                            <span class="mr-2 text-white">{{ user.username }}</span>
                             <img class="img-profile rounded-circle" src="{% static 'img/mainpfp.jpg' %}" style="width: 35px; height: 35px; border: 2px solid rgba(255,255,255,0.3);">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown2">
